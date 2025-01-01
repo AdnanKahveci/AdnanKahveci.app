@@ -13,9 +13,6 @@ const Hero = () => {
             <p className="text-xl md:text-2xl text-gray-600 mb-8">
               Full Stack Developer & AI Development
             </p>
-            <p className="text-gray-600 mb-8 leading-relaxed">
-              I create beautiful and functional web experiences with a focus on user interaction and responsive design.
-            </p>
             <div className="flex space-x-4">
               <a
                 href="#contact"
