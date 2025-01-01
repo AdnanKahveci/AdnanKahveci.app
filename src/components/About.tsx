@@ -60,12 +60,8 @@ const About = () => {
                     <span className="text-sm text-gray-600 ml-2">Normalizing Flows, CNNs, Generative Models</span>
                   </div>
                   <div>
-                    <span className="text-sm font-medium text-gray-700">Tools & Hardware:</span>
-                    <span className="text-sm text-gray-600 ml-2">STM32, Raspberry Pi, NodeMCU, Qt</span>
-                  </div>
-                  <div>
                     <span className="text-sm font-medium text-gray-700">Other Skills:</span>
-                    <span className="text-sm text-gray-600 ml-2">TCP/IP Protocols, Network Security, IoT Systems, Natural Language Processing</span>
+                    <span className="text-sm text-gray-600 ml-2">TCP/IP Protocols, Network Security, Natural Language Processing</span>
                   </div>
                 </div>
               </div>

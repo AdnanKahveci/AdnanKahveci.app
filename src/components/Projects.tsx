@@ -1,8 +1,21 @@
 import { GithubIcon, ChevronLeft, ChevronRight } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 const Projects = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
   const projects = [
     {
       title: 'Glow Model Training',
@@ -36,13 +49,13 @@ const Projects = () => {
 
   const nextSlide = () => {
     setCurrentIndex((prevIndex) => 
-      prevIndex >= projects.length - 3 ? 0 : prevIndex + 1
+      prevIndex >= projects.length - (isMobile ? 1 : 3) ? 0 : prevIndex + 1
     );
   };
 
   const prevSlide = () => {
     setCurrentIndex((prevIndex) => 
-      prevIndex === 0 ? projects.length - 3 : prevIndex - 1
+      prevIndex === 0 ? projects.length - (isMobile ? 1 : 3) : prevIndex - 1
     );
   };
 
@@ -54,26 +67,26 @@ const Projects = () => {
         <div className="relative max-w-7xl mx-auto">
           <button 
             onClick={prevSlide}
-            className="absolute -left-12 top-1/2 -translate-y-1/2 z-10 bg-white/80 p-2 rounded-full shadow-md hover:bg-white"
+            className="absolute -left-4 md:-left-12 top-1/2 -translate-y-1/2 z-10 bg-white/80 p-2 rounded-full shadow-md hover:bg-white"
           >
             <ChevronLeft size={24} />
           </button>
           
           <button 
             onClick={nextSlide}
-            className="absolute -right-12 top-1/2 -translate-y-1/2 z-10 bg-white/80 p-2 rounded-full shadow-md hover:bg-white"
+            className="absolute -right-4 md:-right-12 top-1/2 -translate-y-1/2 z-10 bg-white/80 p-2 rounded-full shadow-md hover:bg-white"
           >
             <ChevronRight size={24} />
           </button>
 
-          <div className="overflow-hidden">
+          <div className="overflow-hidden px-4 md:px-0">
             <div 
               className="transition-transform duration-500 ease-in-out"
-              style={{ transform: `translateX(-${currentIndex * (100 / 3)}%)` }}
+              style={{ transform: `translateX(-${currentIndex * (100 / (isMobile ? 1 : 3))}%)` }}
             >
               <div className="flex">
                 {projects.map((project) => (
-                  <div key={project.title} className="w-1/3 flex-shrink-0 px-2">
+                  <div key={project.title} className={`${isMobile ? 'w-full' : 'w-1/3'} flex-shrink-0 px-2`}>
                     <div className="bg-white rounded-lg shadow-lg overflow-hidden h-full">
                       <img
                         src={project.image}
@@ -82,7 +95,7 @@ const Projects = () => {
                       />
                       <div className="p-4">
                         <h3 className="text-lg font-bold mb-2">{project.title}</h3>
-                        <p className="text-gray-600 text-sm mb-4 line-clamp-3 leading-relaxed min-h-[6.5rem]">{project.description}</p>
+                        <p className="text-gray-600 text-sm mb-4 line-clamp-3 leading-relaxed min-h-[4.5rem]">{project.description}</p>
                         <div className="flex flex-wrap gap-1 mb-4">
                           {project.technologies.map((tech) => (
                             <span
@@ -112,7 +125,7 @@ const Projects = () => {
           </div>
 
           <div className="flex justify-center mt-6 gap-2">
-            {[...Array(projects.length - 2)].map((_, index) => (
+            {[...Array(projects.length - (isMobile ? 0 : 2))].map((_, index) => (
               <button
                 key={index}
                 onClick={() => setCurrentIndex(index)}
