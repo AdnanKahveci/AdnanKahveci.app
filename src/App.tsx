@@ -11,7 +11,7 @@ import CV from './components/CV';
 
 function App() {
   return (
-    <Router basename="/Portfolio-2.0">
+    <Router basename="/AdnanKahveci.app">
       <Routes>
         <Route path="/cv" element={<CV />} />
         <Route path="/" element={

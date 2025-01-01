@@ -31,7 +31,7 @@ const Hero = () => {
           </div>
           <div className="hidden md:block">
             <img
-              src="/Portfolio-2.0/resim.jpg"
+              src="/AdnanKahveci.app/resim.jpg"
               alt="Profile"
               className="rounded-full w-[400px] h-[400px] object-cover mx-auto shadow-xl"
             />

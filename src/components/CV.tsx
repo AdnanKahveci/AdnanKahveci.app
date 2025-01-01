@@ -17,7 +17,7 @@ const CV = () => {
           </button>
           
           <a 
-            href="/Portfolio-2.0/Adnan-Kahveci-CV.pdf" 
+            href="/AdnanKahveci.app/Adnan-Kahveci-CV.pdf" 
             download
             className="flex items-center bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
           >
@@ -28,7 +28,7 @@ const CV = () => {
 
         <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-lg overflow-hidden">
           <iframe
-            src="/Portfolio-2.0/Adnan-Kahveci-CV.pdf"
+            src="/AdnanKahveci.app/Adnan-Kahveci-CV.pdf"
             className="w-full h-[calc(100vh-200px)]"
             title="CV"
           />
