@@ -3,17 +3,23 @@ import { useState, useEffect } from 'react';
 
 const Projects = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [isMobile, setIsMobile] = useState(false);
+  const [viewMode, setViewMode] = useState('mobile'); // 'mobile' | 'tablet' | 'desktop'
 
   useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
+    const checkScreenSize = () => {
+      const width = window.innerWidth;
+      if (width < 640) {
+        setViewMode('mobile');
+      } else if (width < 1024) {
+        setViewMode('tablet');
+      } else {
+        setViewMode('desktop');
+      }
     };
     
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    
-    return () => window.removeEventListener('resize', checkMobile);
+    checkScreenSize();
+    window.addEventListener('resize', checkScreenSize);
+    return () => window.removeEventListener('resize', checkScreenSize);
   }, []);
 
   const projects = [
@@ -47,15 +53,30 @@ const Projects = () => {
     },
   ];
 
+  const getVisibleProjects = () => {
+    switch (viewMode) {
+      case 'mobile':
+        return 1;
+      case 'tablet':
+        return 2;
+      case 'desktop':
+        return 3;
+      default:
+        return 1;
+    }
+  };
+
+  const visibleProjects = getVisibleProjects();
+
   const nextSlide = () => {
     setCurrentIndex((prevIndex) => 
-      prevIndex >= projects.length - (isMobile ? 1 : 3) ? 0 : prevIndex + 1
+      prevIndex >= projects.length - visibleProjects ? 0 : prevIndex + 1
     );
   };
 
   const prevSlide = () => {
     setCurrentIndex((prevIndex) => 
-      prevIndex === 0 ? projects.length - (isMobile ? 1 : 3) : prevIndex - 1
+      prevIndex === 0 ? projects.length - visibleProjects : prevIndex - 1
     );
   };
 
@@ -67,71 +88,76 @@ const Projects = () => {
         <div className="relative max-w-7xl mx-auto">
           <button 
             onClick={prevSlide}
-            className="absolute -left-4 md:-left-12 top-1/2 -translate-y-1/2 z-10 bg-white/80 p-2 rounded-full shadow-md hover:bg-white"
+            className="absolute -left-4 lg:-left-12 top-1/2 -translate-y-1/2 z-10 bg-white/80 p-2 rounded-full shadow-md hover:bg-white transition-colors"
+            aria-label="Previous project"
           >
             <ChevronLeft size={24} />
           </button>
           
           <button 
             onClick={nextSlide}
-            className="absolute -right-4 md:-right-12 top-1/2 -translate-y-1/2 z-10 bg-white/80 p-2 rounded-full shadow-md hover:bg-white"
+            className="absolute -right-4 lg:-right-12 top-1/2 -translate-y-1/2 z-10 bg-white/80 p-2 rounded-full shadow-md hover:bg-white transition-colors"
+            aria-label="Next project"
           >
             <ChevronRight size={24} />
           </button>
 
-          <div className="overflow-hidden px-4 md:px-0">
+          <div className="overflow-hidden">
             <div 
-              className="transition-transform duration-500 ease-in-out"
-              style={{ transform: `translateX(-${currentIndex * (100 / (isMobile ? 1 : 3))}%)` }}
+              className="flex transition-transform duration-500 ease-in-out"
+              style={{ transform: `translateX(-${currentIndex * (100 / visibleProjects)}%)` }}
             >
-              <div className="flex">
-                {projects.map((project) => (
-                  <div key={project.title} className={`${isMobile ? 'w-full' : 'w-1/3'} flex-shrink-0 px-2`}>
-                    <div className="bg-white rounded-lg shadow-lg overflow-hidden h-full">
-                      <img
-                        src={project.image}
-                        alt={project.title}
-                        className="w-full h-48 object-cover"
-                      />
-                      <div className="p-4">
-                        <h3 className="text-lg font-bold mb-2">{project.title}</h3>
-                        <p className="text-gray-600 text-sm mb-4 line-clamp-3 leading-relaxed min-h-[4.5rem]">{project.description}</p>
-                        <div className="flex flex-wrap gap-1 mb-4">
-                          {project.technologies.map((tech) => (
-                            <span
-                              key={tech}
-                              className="px-2 py-1 bg-blue-100 text-blue-600 rounded-full text-xs"
-                            >
-                              {tech}
-                            </span>
-                          ))}
-                        </div>
-                        <div className="flex space-x-4">
-                          <a
-                            href={project.githubLink}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="flex items-center text-gray-600 hover:text-gray-700 text-sm"
+              {projects.map((project) => (
+                <div 
+                  key={project.title} 
+                  className="w-full sm:w-1/2 lg:w-1/3 flex-shrink-0 px-2"
+                >
+                  <div className="bg-white rounded-lg shadow-lg overflow-hidden h-full">
+                    <img
+                      src={project.image}
+                      alt={project.title}
+                      className="w-full h-48 object-cover"
+                    />
+                    <div className="p-6">
+                      <h3 className="text-xl font-bold mb-3">{project.title}</h3>
+                      <p className="text-gray-600 text-sm mb-4 line-clamp-3">{project.description}</p>
+                      <div className="flex flex-wrap gap-2 mb-4">
+                        {project.technologies.map((tech) => (
+                          <span
+                            key={tech}
+                            className="px-3 py-1 bg-blue-100 text-blue-600 rounded-full text-xs font-medium"
                           >
-                            <GithubIcon size={14} className="mr-1" /> Code
-                          </a>
-                        </div>
+                            {tech}
+                          </span>
+                        ))}
+                      </div>
+                      <div className="mt-4">
+                        <a
+                          href={project.githubLink}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center px-4 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-700 transition-colors"
+                        >
+                          <GithubIcon size={16} className="mr-2" />
+                          View Project
+                        </a>
                       </div>
                     </div>
                   </div>
-                ))}
-              </div>
+                </div>
+              ))}
             </div>
           </div>
 
           <div className="flex justify-center mt-6 gap-2">
-            {[...Array(projects.length - (isMobile ? 0 : 2))].map((_, index) => (
+            {[...Array(projects.length - visibleProjects + 1)].map((_, index) => (
               <button
                 key={index}
                 onClick={() => setCurrentIndex(index)}
                 className={`w-2 h-2 rounded-full transition-colors ${
                   currentIndex === index ? 'bg-blue-600' : 'bg-gray-300'
                 }`}
+                aria-label={`Go to project ${index + 1}`}
               />
             ))}
           </div>
