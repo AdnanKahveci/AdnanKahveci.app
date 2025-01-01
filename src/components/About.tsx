@@ -7,7 +7,7 @@ const About = () => {
         <div className="grid md:grid-cols-2 gap-8 items-center">
           <div>
             <img
-              src="resim2.jpg"
+              src="/Portfolio-2.0/resim2.jpg"
               alt="Profile"
               className="rounded-lg shadow-md w-full h-auto max-w-md mx-auto"
             />
