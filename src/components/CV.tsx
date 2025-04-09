@@ -17,7 +17,7 @@ const CV = () => {
           </button>
           
           <a 
-            href="/AdnanKahveci.app/Adnan-Kahveci-CV.pdf" 
+            href="/AdnanKahveci.app/Adnan_Kahveci_CV .pdf" 
             download
             className="flex items-center bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
           >
